@@ -1,21 +1,19 @@
+import {createStore, combineReducers, applyMiddleware} from 'redux';
+import promisesMiddleware from './middlewares/promises';
+import createLogger from 'redux-logger';
+import * as reducers from './reducers';
 
-import {createStore} from 'redux';
+const reducer = combineReducers(reducers);
+const logger = createLogger();
+const createStoreWithMiddleware = applyMiddleware(
+    promisesMiddleware,
+    logger
+)(createStore);
 
-function reducer(state = {}, action) {
-    switch (action.type) {
-        case 'INCREASE_COUNTER':
-            return {...state, ...{counter: (state.counter + 1)}};
-        case 'RESET_COUNTER':
-            return {...state, ...{counter: 0}};
-        default:
-            return state
-    }
-}
-
-const store = createStore(reducer, {
+const store = createStoreWithMiddleware(reducer, {
     issues: [],
     repository: '',
-    counter: 0
-})
+    counter: 0,
+});
 
 export default store;
