@@ -5,6 +5,8 @@ export function issues(state = [], action) {
     switch (action.type) {
         case 'ISSUES_LOADED':
             return action.data;
+        case 'CLEAR_ISSUES':
+            return state = [];
         default:
             return state
     }
@@ -17,5 +19,6 @@ export function issuesById(state = [], action) {
             return state
     }
 }
+
 
 export {counter};

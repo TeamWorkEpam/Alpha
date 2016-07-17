@@ -13,8 +13,7 @@ const createStoreWithMiddleware = applyMiddleware(
 const store = createStoreWithMiddleware(reducer, {
     issues: [],
     issuesById: [],
-    repository: '',
-    counter: 0,
+    counter: '',
 });
 
 export default store;

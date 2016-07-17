@@ -13,7 +13,6 @@ const middleware = store => next => action => {
         type: failureAction,
         error
     }));
-
 };
 
 export default middleware;

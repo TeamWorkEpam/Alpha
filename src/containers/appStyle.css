@@ -1,0 +1,15 @@
+.cell {
+    border-width: 1px;
+    border-style: solid;
+    border-color: #777;
+    padding: 5px;
+}
+.table {
+    color: #777;
+    font-size: 24px;
+    font-family: helvetica, arial, sans-serif;
+    font-weight: 600;
+}
+.row {
+
+}
