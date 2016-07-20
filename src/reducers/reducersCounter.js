@@ -5,9 +5,19 @@ export default function (state = '', action) {
         case 'CLEAR_OUTPUT_VALUE':
             return '';
         case 'OUTPUT_VALUE':
-            return state + '' + action.data;
+            return state !== 0 ? state + '' + action.data :  ''+ action.data;
+        case 'RESULT':
+            return;
+        case '+':
+            return action.data.a + action.data.b;
+        case '-':
+            return action.data.a - action.data.b;
+        case '/':
+            return action.data.a / action.data.b;
+        case '*':
+            return action.data.a * action.data.b;
         case 'ADDITION_OUTPUT_VALUE':
-            return state + action.data;
+            return +state + +action.data;
         default:
             return state
     }

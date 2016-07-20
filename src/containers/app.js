@@ -6,62 +6,43 @@ import {bindActionCreators} from 'redux';
 import {loadIssues, loadIssuesById} from '../actions/actions'
 const stubs = {
     row1: [1, 2, 3],
-    row2: [4, 5, 6],
-    row3: [7, 8, 9, '-'],
-    row4: [0, '*', '/'],
-    clearOutput: {data: 'C', action: 'CLEAR_OUTPUT_VALUE'},
-    additionOutput: {data: '+', action: 'OUTPUT_VALUE'},
+    row2: [4, 5, 6, ' + '],
+    row3: [7, 8, 9, ' - '],
+    row4: [0, '*', ' / '],
+    clearOutput: {data: ' C ', action: 'CLEAR_OUTPUT_VALUE'},
     result: {data: '=', action: 'RESULT'},
 }
 class App extends Component {
     handleClick(action, data) {
-        // console.log(this.props)
-        // this.props.dispatch(loadIssues());
-        // this.props.loadIssues()
         this.props.dispatch({
             type: action,
             data: data
         });
     }
 
-    handleClickCounter(data) {
-        console.log(data);
-        this.props.dispatch({type: 'INCREASE_COUNTER'});
-    }
-
     loadIssuesById() {
         this.props.dispatch(loadIssuesById());
+    }
+
+    loadIssues() {
+        this.props.dispatch(loadIssues());
     }
 
     clearIssues() {
         this.props.dispatch({type: 'CLEAR_ISSUES'});
     }
-
-    resetCounter() {
-        this.props.dispatch({type: 'RESET_COUNTER'});
+    splitValue(data) {
+        let value = data.split(' ');
+        value.a = +value[0];
+        value.action = value[1];
+        value.b = +value[2];
+        return value;
     }
-
-    outputValue(action) {
+    result(action, data) {
+        let value = this.splitValue(data);
         this.props.dispatch({
-            type: 'OUTPUT_VALUE',
-            data: data
-        });
-    }
-
-    clearOutputValue(data) {
-        this.props.dispatch({
-            type: data,
-        });
-    }
-    additionOutput(data) {
-        this.props.dispatch({
-            type: data,
-        });
-    }
-    result(data) {
-        this.props.dispatch({
-            type: 'RESULT',
-            data: data
+            type: value.action,
+            data: value
         });
     }
 
@@ -70,11 +51,8 @@ class App extends Component {
         return (
             <div>
                 <h1>Hello world!</h1>
-
-                <button onClick={::this.handleClickCounter}>Counter</button>
-                <button onClick={::this.resetCounter}>Reset counter</button>
-                <button onClick={::this.handleClick}>Load issues</button>
                 <button onClick={::this.loadIssuesById}>Load issues by ID</button>
+                <button onClick={::this.loadIssues}>Load issues</button>
                 <button onClick={::this.clearIssues}>Clear Issues</button>
                 <ul>
                     {this.props.issues.map((issue, key) => <li key={key}>issues: {issue}</li>)}
@@ -88,17 +66,14 @@ class App extends Component {
                             <button onClick={this.handleClick.bind(this, 'OUTPUT_VALUE', number)}>{number}</button>
                         </td>)}
                         {<td>
-                            <button onClick={this.handleClick.bind(this, stubs.clearOutput.action)}>{stubs.clearOutput.data}</button>
+                            <button
+                                onClick={this.handleClick.bind(this, stubs.clearOutput.action)}>{stubs.clearOutput.data}</button>
                         </td>}
                     </tr>
                     <tr>
                         {stubs.row2.map((number, key) => <td key={key}>
                             <button onClick={this.handleClick.bind(this, 'OUTPUT_VALUE', number)}>{number}</button>
                         </td>)}
-                        {<td>
-                            <button onClick={this.handleClick.bind(this, stubs.additionOutput.action, stubs.additionOutput.data)}>{stubs.additionOutput.data}</button>
-                        </td>}
-
                     </tr>
                     <tr>
                         {stubs.row3.map((number, key) => <td key={key}>
@@ -107,10 +82,11 @@ class App extends Component {
                     </tr>
                     <tr>
                         {stubs.row4.map((number, key) => <td key={key}>
-                            <button>{number}</button>
+                            <button onClick={this.handleClick.bind(this, 'OUTPUT_VALUE', number)}>{number}</button>
                         </td>)}
                         {<td>
-                            <button onClick={this.handleClick.bind(this, this.props.counter)}>{stubs.result.data}</button>
+                            <button
+                                onClick={this.result.bind(this, stubs.result.action, this.props.counter)}>{stubs.result.data}</button>
                         </td>}
                     </tr>
                 </table>
